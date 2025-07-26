@@ -10,7 +10,7 @@
    <!-- Google Fonts (Poppins for elegance) -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
   <!-- Custom CSS -->
-  <link href="style.css" rel="stylesheet">
+  <link href={{ asset('css/style.css') }} rel="stylesheet">
 
 </head>
 <body>
@@ -30,16 +30,16 @@
         <div class="col-md-2 mb-4">
           <h5>Quick Links</h5>
           <ul class="list-unstyled">
-            <li><a href="home.php" class="text-white">Home</a></li>
-            <li><a href="../venues.php" class="text-white">Venues</a></li>
-            <li><a href="../vendors.php" class="text-white">Vendors</a></li>
-            <li><a href="../guest-list.php" class="text-white">Guest List</a></li>
+            <li><a href="{{ url('/') }}" class="text-white">Home</a></li>
+            <li><a href="{{ url('/about') }}" class="text-white">About</a></li>
+            <li><a href="{{ url('/home2') }}" class="text-white">Features</a></li>
+            <li><a href="{{ url('/service') }}" class="text-white">Sevices</a></li>
           </ul>
         </div>
         <div class="col-md-3 mb-4">
           <h5>Support</h5>
           <ul class="list-unstyled">
-            <li><a href="../contact.php" class="text-white">Contact Us</a></li>
+            <li><a href="{{ url('/home2') }}" class="text-white">Contact Us</a></li>
             <li><a href="../faq.php" class="text-white">FAQ</a></li>
             <li><a href="../privacy.php" class="text-white">Privacy Policy</a></li>
           </ul>

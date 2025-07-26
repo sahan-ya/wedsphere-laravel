@@ -32,7 +32,7 @@
         <div class="content">
             <h3>why choose us?</h3>
             <p>We bring your dream wedding to life with personalized services, expert planning, and unparalleled attention to detail.</p>
-            <a href="shop.php" class="btn">shop now</a>
+            <a href="{{ url('/shop') }}" class="btn">shop now</a>
         </div>
 </div>
 
@@ -41,7 +41,7 @@
      <div class="content">
             <h3>what we provide?</h3>
             <p>From venue selection to decor, photography, and entertainment, we handle every aspect of your special day to make it unforgettable.</p>
-            <a href="contact.php" class="btn">contact us</a>
+            <a href="{{ url('/home2') }}" class="btn">contact us</a>
         </div>
 
         <div class="image" >

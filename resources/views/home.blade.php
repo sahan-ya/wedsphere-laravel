@@ -22,13 +22,13 @@
     <div class="container">
       <h1 class="logo">WedSphere</h1>
      <p class="tagline">Your Dream Wedding Starts Here</p>
-      <a href="#features" class="cta-button">Start Planning Now</a>
+      <a href="{{ url('/features') }}" class="cta-button">Start Planning Now</a>
     </div>
   
 
   <section class="image-carousel-section">
         <div class="container">
-            <h2 class="section-title">Photo Highlights</h2>
+            <h2 class="section-title"></h2>
             <div class="carousel-container">
                 <div class="carousel-track">
                     <img src={{ asset('images/invite4.jpg') }} alt="Wedding Photo 1" class="carousel-image">
@@ -44,63 +44,7 @@
 
     </section>
 
-   <!-- Hero Section -->
-    <section class="hero02">
-        <div class="container02">
-            <div class="hero-content02">
-                <h1 class="hero-h1">Your Fairy Tale Wedding Begins Here ✨</h1>
-                <p class="hero-subtitle">Turn your dream wedding into reality with our magical planning platform that makes every moment perfect 💕</p>
-                
-                <div class="hero-buttons">
-                    <a href="dashboard.php" class="btn-hero">🌟 Start Your Journey</a>
-                    <a href="#features" class="btn-secondary">💖 Discover Magic</a>
-                </div>
-
-                <div class="stats">
-                    <div class="stat-item">
-                        <span class="stat-number">50K+</span>
-                        <span class="stat-label">💕 Happy Couples</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number">1000+</span>
-                        <span class="stat-label">🏰 Dream Venues</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number">99%</span>
-                        <span class="stat-label">✨ Perfect Days</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials -->
-    <section id="testimonials" class="testimonials">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="terminol-h2">Love Stories From Happy Couples 💕</h2>
-            </div>
-            
-            <div class="testimonial-slider">
-                <div class="testimonial active">
-                    <div class="testimonial-text">"WedSphere made our dream wedding come true! Everything was so easy and beautiful. We couldn't have asked for a more perfect day! 💖"</div>
-                    <div class="testimonial-author">- Sarah & Mike ✨</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="cta">
-        <div class="container">
-            <div class="section-header">
-                <h2>Ready to Create Magic? ✨</h2>
-                <p>Join thousands of happy couples who planned their perfect wedding with WedSphere! Your fairy tale starts here 💕</p>
-                <br>
-                <a href="dashboard.php" class="btn-hero">🌟 Start Planning for Free</a>
-            </div>
-        </div>
-    </section>
+   
 
  @include('layouts.footer')
 </body>

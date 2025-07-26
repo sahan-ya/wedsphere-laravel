@@ -27,4 +27,49 @@ Route::get('/header', function () {
 Route::get('/footer', function () {
     return view('footer'); // loads resources/views/about.blade.php
 });
-
+Route::get('/home2', function () {
+    return view('home2'); // loads resources/views/about.blade.php
+});
+Route::get('/vendor', function () {
+    return view('vendor'); // loads resources/views/about.blade.php
+});
+Route::get('/outfit', function () {
+    return view('outfit'); // loads resources/views/about.blade.php
+});
+Route::get('/invitation', function () {
+    return view('invitation'); // loads resources/views/about.blade.php
+});
+Route::get('/guest', function () {
+    return view('guest'); // loads resources/views/about.blade.php
+});
+Route::get('/budget', function () {
+    return view('budget'); // loads resources/views/about.blade.php
+});
+Route::get('/saloon', function () {
+    return view('saloon'); // loads resources/views/about.blade.php
+});
+Route::get('/photo', function () {
+    return view('photo'); // loads resources/views/about.blade.php
+});
+Route::get('/catering', function () {
+    return view('catering'); // loads resources/views/about.blade.php
+});
+Route::get('/deco', function () {
+    return view('deco'); // loads resources/views/about.blade.php
+});
+Route::get('/entertainment', function () {
+    return view('entertainment'); // loads resources/views/about.blade.php
+});
+Route::get('/checklist', function () {
+    return view('checklist'); // loads resources/views/about.blade.php
+});
+Route::get('/register', function () {
+    return view('register'); // loads resources/views/about.blade.php
+});
+Route::get('/login', function () {
+    return view('login'); // loads resources/views/about.blade.php
+});
+Route::get('/welcome', function () {
+    return view('welcome'); // loads resources/views/about.blade.php
+});
+?>
