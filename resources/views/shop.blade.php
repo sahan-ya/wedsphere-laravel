@@ -8,8 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-      <!-- Custom CSS -->
-  <link href={{ asset('css/style.css') }} rel="stylesheet">
+      <link href={{ asset('css/style.css') }} rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -339,23 +338,23 @@
             background: #ffd700;
             animation: confetti-fall 3s ease-in-out infinite;
         }
-        .confetti:nth-child(2n) { 
-            background: #ff6b6b; 
+        .confetti:nth-child(2n) {
+            background: #ff6b6b;
             animation-delay: 0.2s;
             left: 20%;
         }
-        .confetti:nth-child(3n) { 
-            background: #4ecdc4; 
+        .confetti:nth-child(3n) {
+            background: #4ecdc4;
             animation-delay: 0.4s;
             left: 40%;
         }
-        .confetti:nth-child(4n) { 
-            background: #45b7d1; 
+        .confetti:nth-child(4n) {
+            background: #45b7d1;
             animation-delay: 0.6s;
             left: 60%;
         }
-        .confetti:nth-child(5n) { 
-            background: #96ceb4; 
+        .confetti:nth-child(5n) {
+            background: #96ceb4;
             animation-delay: 0.8s;
             left: 80%;
         }
@@ -482,20 +481,35 @@
             <i class="fas fa-arrow-left mr-2"></i>Back to Services
         </a>
 
-        <section class="cart-section">
-            <h2 class="section-title text-2xl mb-6">
-                Your Shopping Cart
-                <span id="cart-count-display" class="cart-count">0</span>
-            </h2>
-            <div id="cart-items">
-                <div class="empty-cart">
-                    Your cart is empty. Add some services to get started!
+        <div class="cart-section" id="cart-container">
+    @php
+        $cart = session()->get('cart', []);
+        $total = 0;
+    @endphp
+    @if(empty($cart))
+        <p class="empty-cart">Your cart is empty.</p>
+    @else
+        @foreach($cart as $index => $item)
+            @php
+                $total += $item['price'];
+            @endphp
+            <div class="cart-item">
+                <div class="cart-item-info">
+                    <span class="cart-item-title">{{ $item['name'] }}</span>
+                    <span class="cart-item-price">${{ number_format($item['price'], 2) }}</span>
                 </div>
+                <form action="{{ route('cart.remove') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="index" value="{{ $index }}">
+                    <button type="submit" class="remove-btn">Remove</button>
+                </form>
             </div>
-            <div id="cart-total" class="cart-total" style="display: none;">
-                Total: $<span id="total-amount">0.00</span>
-            </div>
-        </section>
+        @endforeach
+        <div class="cart-total">
+            Total: ${{ number_format($total, 2) }}
+        </div>
+    @endif
+</div>
 
         <section class="mt-12">
             <h2 class="section-title text-2xl mb-8">Complete Your Booking</h2>
@@ -526,16 +540,16 @@
                     <textarea id="specialRequests" name="specialRequests" class="form-textarea" placeholder="Any specific requirements or notes..."></textarea>
                 </div>
                 <button type="submit" class="submit-button">
-                    <i class="fas fa-credit-card mr-2"></i>Proceed to Payment
+                     <a href="{{ url('/register') }}">
+                         <i class="fas fa-credit-card mr-2"></i>Proceed to Payment
+                     </a>
                 </button>
             </form>
         </section>
     </div>
 
-     <!-- Payment Modal -->
     <div id="payment-modal" class="modal-overlay">
         <div class="payment-modal">
-            <!-- Step 1: Payment Method Selection -->
             <div id="payment-step-1" class="payment-step active">
                 <h3 class="text-2xl font-bold text-center mb-6">Choose Payment Method</h3>
                 <div class="payment-methods">
@@ -566,24 +580,19 @@
                 </div>
             </div>
 
-            <!-- Step 2: Payment Details -->
             <div id="payment-step-2" class="payment-step">
                 <h3 class="text-2xl font-bold text-center mb-6">Payment Details</h3>
-                
-                <!-- Real-time Card Preview -->
                 <div id="card-preview" class="card-preview">
                     <div class="card-number-display" id="preview-number">•••• •••• •••• ••••</div>
                     <div class="card-holder-display" id="preview-name">CARD HOLDER NAME</div>
                     <div class="card-expiry-display" id="preview-expiry">MM/YY</div>
                 </div>
-
                 <div id="card-form">
                     <div class="card-input-container">
                         <input type="text" class="card-input" placeholder="Card Number" maxlength="19" id="card-number">
                         <i id="card-type-icon" class="card-type-icon fas fa-credit-card"></i>
                     </div>
                     <div id="card-number-validation" class="real-time-validation"></div>
-                    
                     <div class="flex gap-4">
                         <div class="flex-1">
                             <input type="text" class="card-input" placeholder="MM/YY" maxlength="5" id="card-expiry">
@@ -594,11 +603,10 @@
                             <div id="card-cvv-validation" class="real-time-validation"></div>
                         </div>
                     </div>
-                    
                     <input type="text" class="card-input" placeholder="Cardholder Name" id="card-name">
                     <div id="card-name-validation" class="real-time-validation"></div>
                 </div>
-                
+
                 <div class="text-center mt-6">
                     <p class="text-lg font-semibold">Total: $<span id="payment-total">0.00</span></p>
                 </div>
@@ -610,7 +618,6 @@
                 </div>
             </div>
 
-            <!-- Step 3: Processing -->
             <div id="payment-step-3" class="payment-step">
                 <div class="processing-animation">
                     <div class="spinner"></div>
@@ -623,585 +630,40 @@
                 </div>
             </div>
 
-            <!-- Step 4: Success -->
             <div id="payment-step-4" class="payment-step">
                 <div class="success-modal">
                     <div class="confetti" style="left: 10%;"></div>
-                    <div class="confetti" style="left: 30%;"></div>
-                    <div class="confetti" style="left: 50%;"></div>
-                    <div class="confetti" style="left: 70%;"></div>
-                    <div class="confetti" style="left: 90%;"></div>
-                    
-                    <div class="floating-hearts" style="top: 20%; left: 15%;">💕</div>
-                    <div class="floating-hearts" style="top: 30%; right: 20%; animation-delay: 1s;">💖</div>
-                    <div class="floating-hearts" style="top: 40%; left: 80%; animation-delay: 2s;">💝</div>
-                    
-                    <div class="success-icon">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <div class="success-text" id="dynamic-success-title">🎉 Payment Successful! 🎉</div>
-                    <div class="success-subtext" id="dynamic-success-subtitle">Your dream wedding services are booked!</div>
-                    
-                    <div class="creative-message" id="creative-message">
-                        ✨ Your magical moment is now secured! ✨
-                    </div>
-                    
+                    <div class="confetti" style="left: 20%; animation-delay: 0.2s;"></div>
+                    <div class="confetti" style="left: 30%; animation-delay: 0.4s;"></div>
+                    <div class="confetti" style="left: 40%; animation-delay: 0.6s;"></div>
+                    <div class="confetti" style="left: 50%; animation-delay: 0.8s;"></div>
+                    <div class="confetti" style="left: 60%; animation-delay: 1.0s;"></div>
+                    <div class="confetti" style="left: 70%; animation-delay: 1.2s;"></div>
+                    <div class="confetti" style="left: 80%; animation-delay: 1.4s;"></div>
+                    <div class="confetti" style="left: 90%; animation-delay: 1.6s;"></div>
+
+                    <i class="fas fa-check-circle success-icon"></i>
+                    <h3 class="success-text">Booking Confirmed!</h3>
+                    <p class="success-subtext">Thank you for choosing WedSphere. Your booking is complete.</p>
+
                     <div class="booking-details">
-                        <h4 class="font-bold mb-3">🌟 Booking Confirmation 🌟</h4>
-                        <div id="booking-summary"></div>
-                        <p class="mt-3"><strong>💳 Payment Method:</strong> <span id="payment-method-display"></span></p>
-                        <p><strong>🔒 Transaction ID:</strong> <span id="transaction-id"></span></p>
+                        <p><strong>Confirmation ID:</strong> #WS{{ rand(100000, 999999) }}</p>
+                        <p><strong>Total Paid:</strong> $<span id="final-total">0.00</span></p>
                     </div>
-                    
-                    <p class="text-sm opacity-90 mb-6" id="creative-email-message">
-                        📧 A beautifully crafted confirmation email is flying to your inbox right now! 📧
-                    </p>
-                    
-                    <button type="button" id="close-success" class="close-success-btn">
-                        Continue Planning Your Perfect Day ✨
+
+                    <p class="creative-message">"Love is in the air, and your perfect day is on its way!"</p>
+
+                    <button class="close-success-btn" onclick="window.location.href='/service'">
+                        Return to Services
                     </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
-        // Use a consistent key for localStorage across all pages for the cart
-        const CART_STORAGE_KEY = 'weddingCart';
-        let cart = JSON.parse(localStorage.getItem(CART_STORAGE_KEY)) || [];
-        let totalAmount = 0;
-        let selectedPaymentMethod = 'card';
-        let currentPaymentStep = 1;
-        let cardValidation = {
-            number: false,
-            expiry: false,
-            cvv: false,
-            name: false
-        };
+<script>
+   
+</script>
 
-        // Sample cart data for demonstration
-        if (cart.length === 0) {
-            cart = [
-                { name: "Bridal Makeup & Hair", price: 299.99, quantity: 1 },
-                { name: "Photography Package", price: 899.99, quantity: 1 },
-                { name: "Floral Arrangements", price: 450.00, quantity: 1 }
-            ];
-            saveCart();
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            updateCartDisplay();
-            updateGlobalCartCount();
-            document.getElementById('preferredDate').min = new Date().toISOString().split('T')[0];
-            setupPaymentModal();
-            setupRealTimeCardValidation();
-        });
-
-        function saveCart() {
-            localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
-            updateGlobalCartCount();
-        }
-
-        function updateCartDisplay() {
-            const cartItemsContainer = document.getElementById('cart-items');
-            cartItemsContainer.innerHTML = '';
-            totalAmount = 0;
-
-            if (cart.length === 0) {
-                cartItemsContainer.innerHTML = '<div class="empty-cart">Your cart is empty. Add some services to get started!</div>';
-                document.getElementById('cart-total').style.display = 'none';
-                document.getElementById('cart-count-display').style.display = 'none';
-                document.querySelector('.submit-button').disabled = true;
-                return;
-            }
-
-            cart.forEach((item, index) => {
-                const cartItemDiv = document.createElement('div');
-                cartItemDiv.classList.add('cart-item');
-                const itemQuantity = item.quantity ? ` (x${item.quantity})` : '';
-                cartItemDiv.innerHTML = `
-                    <div class="cart-item-info">
-                        <div class="cart-item-title">${item.name}${itemQuantity}</div>
-                        <div class="cart-item-price">$${(item.price * (item.quantity || 1)).toFixed(2)}</div>
-                    </div>
-                    <button class="remove-btn" data-index="${index}">Remove</button>
-                `;
-                cartItemsContainer.appendChild(cartItemDiv);
-                totalAmount += (item.price * (item.quantity || 1));
-            });
-
-            document.getElementById('total-amount').textContent = totalAmount.toFixed(2);
-            document.getElementById('cart-total').style.display = 'block';
-            document.getElementById('cart-count-display').style.display = 'inline-block';
-            
-            document.getElementById('cart-count-display').textContent = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
-            
-            document.querySelector('.submit-button').disabled = false;
-
-            // Add event listeners to new remove buttons
-            document.querySelectorAll('.remove-btn').forEach(button => {
-                button.addEventListener('click', function() {
-                    const index = parseInt(this.dataset.index);
-                    
-                    if (cart[index].quantity > 1) {
-                        cart[index].quantity--;
-                    } else {
-                        cart.splice(index, 1);
-                    }
-                    
-                    saveCart();
-                    updateCartDisplay();
-                });
-            });
-        }
-
-        function updateGlobalCartCount() {
-            const totalItemsInCart = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
-
-            const saloonCartCountElement = document.getElementById('cart-count');
-            if (saloonCartCountElement) {
-                saloonCartCountElement.textContent = totalItemsInCart;
-                saloonCartCountElement.style.display = totalItemsInCart > 0 ? 'inline-block' : 'none';
-            }
-
-            const shopCartCountDisplayElement = document.getElementById('cart-count-display');
-            if (shopCartCountDisplayElement) {
-                shopCartCountDisplayElement.textContent = totalItemsInCart;
-                shopCartCountDisplayElement.style.display = totalItemsInCart > 0 ? 'inline-block' : 'none';
-            }
-        }
-
-        // Real-time Card Validation Functions
-        function setupRealTimeCardValidation() {
-            const cardNumber = document.getElementById('card-number');
-            const cardExpiry = document.getElementById('card-expiry');
-            const cardCvv = document.getElementById('card-cvv');
-            const cardName = document.getElementById('card-name');
-
-            // Card number validation and formatting
-            cardNumber.addEventListener('input', function(e) {
-                let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
-                let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
-                e.target.value = formattedValue;
-                
-                validateCardNumber(value);
-                updateCardPreview();
-                updateCardType(value);
-            });
-
-            // Expiry date validation and formatting
-            cardExpiry.addEventListener('input', function(e) {
-                let value = e.target.value.replace(/\D/g, '');
-                if (value.length >= 2) {
-                    value = value.substring(0, 2) + '/' + value.substring(2, 4);
-                }
-                e.target.value = value;
-                
-                validateCardExpiry(value);
-                updateCardPreview();
-            });
-
-            // CVV validation
-            cardCvv.addEventListener('input', function(e) {
-                let value = e.target.value.replace(/\D/g, '');
-                e.target.value = value;
-                validateCardCvv(value);
-            });
-
-            // Name validation
-            cardName.addEventListener('input', function(e) {
-                let value = e.target.value.replace(/[^a-zA-Z\s]/g, '');
-                e.target.value = value;
-                validateCardName(value);
-                updateCardPreview();
-            });
-        }
-
-        function validateCardNumber(number) {
-            const validation = document.getElementById('card-number-validation');
-            const input = document.getElementById('card-number');
-            
-            if (number.length === 0) {
-                validation.textContent = '';
-                input.classList.remove('valid', 'invalid');
-                cardValidation.number = false;
-            } else if (number.length < 13) {
-                validation.textContent = '❌ Card number is too short';
-                validation.className = 'real-time-validation validation-error';
-                input.classList.remove('valid');
-                input.classList.add('invalid');
-                cardValidation.number = false;
-            } else if (!luhnCheck(number)) {
-                validation.textContent = '❌ Invalid card number';
-                validation.className = 'real-time-validation validation-error';
-                input.classList.remove('valid');
-                input.classList.add('invalid');
-                cardValidation.number = false;
-            } else {
-                const lastFour = number.slice(-4);
-                validation.textContent = `✅ Valid card ending in ${lastFour}`;
-                validation.className = 'real-time-validation validation-success';
-                input.classList.remove('invalid');
-                input.classList.add('valid');
-                cardValidation.number = true;
-            }
-            
-            updatePaymentButton();
-        }
-
-        function validateCardExpiry(expiry) {
-            const validation = document.getElementById('card-expiry-validation');
-            const input = document.getElementById('card-expiry');
-            
-            if (expiry.length === 0) {
-                validation.textContent = '';
-                input.classList.remove('valid', 'invalid');
-                cardValidation.expiry = false;
-            } else if (expiry.length < 5) {
-                validation.textContent = '❌ Enter MM/YY format';
-                validation.className = 'real-time-validation validation-error';
-                input.classList.remove('valid');
-                input.classList.add('invalid');
-                cardValidation.expiry = false;
-            } else {
-                const [month, year] = expiry.split('/');
-                const currentDate = new Date();
-                const currentYear = currentDate.getFullYear() % 100;
-                const currentMonth = currentDate.getMonth() + 1;
-                
-                if (parseInt(month) < 1 || parseInt(month) > 12) {
-                    validation.textContent = '❌ Invalid month';
-                    validation.className = 'real-time-validation validation-error';
-                    input.classList.remove('valid');
-                    input.classList.add('invalid');
-                    cardValidation.expiry = false;
-                } else if (parseInt(year) < currentYear || (parseInt(year) === currentYear && parseInt(month) < currentMonth)) {
-                    validation.textContent = '❌ Card has expired';
-                    validation.className = 'real-time-validation validation-error';
-                    input.classList.remove('valid');
-                    input.classList.add('invalid');
-                    cardValidation.expiry = false;
-                } else {
-                    validation.textContent = '✅ Valid expiry date';
-                    validation.className = 'real-time-validation validation-success';
-                    input.classList.remove('invalid');
-                    input.classList.add('valid');
-                    cardValidation.expiry = true;
-                }
-            }
-            
-            updatePaymentButton();
-        }
-
-        function validateCardCvv(cvv) {
-            const validation = document.getElementById('card-cvv-validation');
-            const input = document.getElementById('card-cvv');
-            
-            if (cvv.length === 0) {
-                validation.textContent = '';
-                input.classList.remove('valid', 'invalid');
-                cardValidation.cvv = false;
-            } else if (cvv.length < 3) {
-                validation.textContent = '❌ CVV too short';
-                validation.className = 'real-time-validation validation-error';
-                input.classList.remove('valid');
-                input.classList.add('invalid');
-                cardValidation.cvv = false;
-            } else if (cvv.length >= 3) {
-                validation.textContent = '✅ Valid CVV';
-                validation.className = 'real-time-validation validation-success';
-                input.classList.remove('invalid');
-                input.classList.add('valid');
-                cardValidation.cvv = true;
-            }
-            
-            updatePaymentButton();
-        }
-
-        function validateCardName(name) {
-            const validation = document.getElementById('card-name-validation');
-            const input = document.getElementById('card-name');
-            
-            if (name.length === 0) {
-                validation.textContent = '';
-                input.classList.remove('valid', 'invalid');
-                cardValidation.name = false;
-            } else if (name.length < 3) {
-                validation.textContent = '❌ Name too short';
-                validation.className = 'real-time-validation validation-error';
-                input.classList.remove('valid');
-                input.classList.add('invalid');
-                cardValidation.name = false;
-            } else {
-                validation.textContent = '✅ Valid name';
-                validation.className = 'real-time-validation validation-success';
-                input.classList.remove('invalid');
-                input.classList.add('valid');
-                cardValidation.name = true;
-            }
-            
-            updatePaymentButton();
-        }
-
-        function updateCardType(number) {
-            const icon = document.getElementById('card-type-icon');
-            
-            if (number.startsWith('4')) {
-                icon.className = 'card-type-icon fab fa-cc-visa';
-                icon.style.color = '#1A1F71';
-            } else if (number.startsWith('5') || number.startsWith('2')) {
-                icon.className = 'card-type-icon fab fa-cc-mastercard';
-                icon.style.color = '#EB001B';
-            } else if (number.startsWith('3')) {
-                icon.className = 'card-type-icon fab fa-cc-amex';
-                icon.style.color = '#006FCF';
-            } else if (number.startsWith('6')) {
-                icon.className = 'card-type-icon fab fa-cc-discover';
-                icon.style.color = '#FF6000';
-            } else {
-                icon.className = 'card-type-icon fas fa-credit-card';
-                icon.style.color = '#666';
-            }
-        }
-
-        function updateCardPreview() {
-            const number = document.getElementById('card-number').value || '•••• •••• •••• ••••';
-            const name = document.getElementById('card-name').value || 'CARD HOLDER NAME';
-            const expiry = document.getElementById('card-expiry').value || 'MM/YY';
-            
-            document.getElementById('preview-number').textContent = number;
-            document.getElementById('preview-name').textContent = name.toUpperCase();
-            document.getElementById('preview-expiry').textContent = expiry;
-        }
-
-        function updatePaymentButton() {
-            const button = document.getElementById('process-payment');
-            const allValid = Object.values(cardValidation).every(valid => valid);
-            
-            button.disabled = !allValid;
-            if (allValid) {
-                button.classList.remove('bg-gray-400');
-                button.classList.add('bg-green-600', 'hover:bg-green-700');
-            } else {
-                button.classList.remove('bg-green-600', 'hover:bg-green-700');
-                button.classList.add('bg-gray-400');
-            }
-        }
-
-        // Luhn algorithm for card validation
-        function luhnCheck(cardNumber) {
-            let sum = 0;
-            let alternate = false;
-            
-            for (let i = cardNumber.length - 1; i >= 0; i--) {
-                let n = parseInt(cardNumber.charAt(i), 10);
-                
-                if (alternate) {
-                    n *= 2;
-                    if (n > 9) {
-                        n = (n % 10) + 1;
-                    }
-                }
-                
-                sum += n;
-                alternate = !alternate;
-            }
-            
-            return (sum % 10) === 0;
-        }
-
-        function setupPaymentModal() {
-            // Payment method selection
-            document.querySelectorAll('.payment-method').forEach(method => {
-                method.addEventListener('click', function() {
-                    document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('selected'));
-                    this.classList.add('selected');
-                    this.querySelector('input[type="radio"]').checked = true;
-                    selectedPaymentMethod = this.dataset.method;
-                });
-            });
-
-            // Modal navigation
-            document.getElementById('cancel-payment').addEventListener('click', closePaymentModal);
-            document.getElementById('continue-payment').addEventListener('click', () => showPaymentStep(2));
-            document.getElementById('back-payment').addEventListener('click', () => showPaymentStep(1));
-            document.getElementById('process-payment').addEventListener('click', processPayment);
-            document.getElementById('close-success').addEventListener('click', closePaymentModal);
-        }
-
-        function showPaymentModal() {
-            document.getElementById('payment-modal').classList.add('show');
-            document.getElementById('payment-total').textContent = totalAmount.toFixed(2);
-            showPaymentStep(1);
-        }
-
-        function closePaymentModal() {
-            document.getElementById('payment-modal').classList.remove('show');
-            currentPaymentStep = 1;
-            showPaymentStep(1);
-            
-            // Reset form
-            document.getElementById('card-number').value = '';
-            document.getElementById('card-expiry').value = '';
-            document.getElementById('card-cvv').value = '';
-            document.getElementById('card-name').value = '';
-            updateCardPreview();
-            
-            // Reset validation
-            cardValidation = { number: false, expiry: false, cvv: false, name: false };
-            updatePaymentButton();
-        }
-
-        function showPaymentStep(step) {
-            document.querySelectorAll('.payment-step').forEach(s => s.classList.remove('active'));
-            document.getElementById(`payment-step-${step}`).classList.add('active');
-            currentPaymentStep = step;
-        }
-
-        function processPayment() {
-            showPaymentStep(3);
-            
-            const progressSteps = [
-                { progress: 20, status: "🔐 Encrypting payment data..." },
-                { progress: 40, status: "🏦 Contacting bank..." },
-                { progress: 60, status: "💳 Verifying card details..." },
-                { progress: 80, status: "✅ Authorization approved..." },
-                { progress: 100, status: "🎉 Payment successful!" }
-            ];
-
-            let stepIndex = 0;
-            const progressInterval = setInterval(() => {
-                if (stepIndex < progressSteps.length) {
-                    const step = progressSteps[stepIndex];
-                    document.getElementById('progress-fill').style.width = step.progress + '%';
-                    document.getElementById('processing-status').textContent = step.status;
-                    stepIndex++;
-                } else {
-                    clearInterval(progressInterval);
-                    setTimeout(() => {
-                        showPaymentSuccess();
-                    }, 1000);
-                }
-            }, 1200);
-        }
-
-        function getCreativeSuccessMessage() {
-            const messages = [
-                "✨ Your magical moment is now secured! ✨",
-                "💫 Dreams do come true, and yours just did! 💫",
-                "🌟 Your perfect day is officially booked! 🌟",
-                "💖 Love is in the air and your wedding is confirmed! 💖",
-                "🎭 The stage is set for your fairy tale wedding! 🎭",
-                "🌸 Your happily ever after starts now! 🌸",
-                "💐 Every petal, every moment, perfectly planned! 💐",
-                "🦋 Your wedding butterfly effect has begun! 🦋"
-            ];
-            return messages[Math.floor(Math.random() * messages.length)];
-        }
-
-        function getCreativeTitle() {
-            const titles = [
-                "🎉 Payment Successful! 🎉",
-                "💰 Cha-Ching! You're All Set! 💰",
-                "✅ Mission Accomplished! ✅",
-                "🎊 Woohoo! Payment Complete! 🎊",
-                "🌟 Success! Your Dream is Secured! 🌟",
-                "💳 Payment Magic Complete! 💳"
-            ];
-            return titles[Math.floor(Math.random() * titles.length)];
-        }
-
-        function getCreativeSubtitle() {
-            const subtitles = [
-                "Your dream wedding services are booked!",
-                "Time to celebrate - everything's confirmed!",
-                "Your perfect day awaits!",
-                "All systems go for your magical moment!",
-                "Your wedding dreams are now reality!",
-                "The countdown to your perfect day begins!"
-            ];
-            return subtitles[Math.floor(Math.random() * subtitles.length)];
-        }
-
-        function getCreativeEmailMessage() {
-            const messages = [
-                "📧 A beautifully crafted confirmation email is flying to your inbox right now! 📧",
-                "💌 Your confirmation email is being delivered by digital cupid! 💌",
-                "📮 Check your inbox - a magical confirmation awaits! 📮",
-                "✉️ Your confirmation email is arriving faster than you can say 'I do!' ✉️",
-                "📨 A shower of confirmation details is heading to your email! 📨"
-            ];
-            return messages[Math.floor(Math.random() * messages.length)];
-        }
-
-        function showPaymentSuccess() {
-            // Generate transaction ID
-            const transactionId = 'WED' + Date.now().toString().slice(-8);
-            document.getElementById('transaction-id').textContent = transactionId;
-            
-            // Set creative messages
-            document.getElementById('dynamic-success-title').textContent = getCreativeTitle();
-            document.getElementById('dynamic-success-subtitle').textContent = getCreativeSubtitle();
-            document.getElementById('creative-message').textContent = getCreativeMessage();
-            document.getElementById('creative-email-message').textContent = getCreativeEmailMessage();
-            
-            // Generate booking summary
-            const formData = {
-                fullName: document.getElementById('fullName').value,
-                email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value,
-                preferredDate: document.getElementById('preferredDate').value,
-                preferredTime: document.getElementById('preferredTime').value,
-                services: cart,
-                totalAmount: totalAmount
-            };
-
-            // Get payment method display
-            const cardNumber = document.getElementById('card-number').value;
-            const lastFour = cardNumber.replace(/\s/g, '').slice(-4);
-            let paymentMethodDisplay = '';
-            
-            if (selectedPaymentMethod === 'card') {
-                paymentMethodDisplay = `Card ending in ${lastFour}`;
-            } else {
-                paymentMethodDisplay = selectedPaymentMethod.charAt(0).toUpperCase() + selectedPaymentMethod.slice(1);
-            }
-            
-            document.getElementById('payment-method-display').textContent = paymentMethodDisplay;
-
-            const bookingSummary = `
-                <p><strong>👰 Name:</strong> ${formData.fullName}</p>
-                <p><strong>📅 Date:</strong> ${formData.preferredDate}</p>
-                <p><strong>⏰ Time:</strong> ${formData.preferredTime}</p>
-                <p><strong>💅 Services:</strong> ${cart.length} service(s)</p>
-                <p><strong>💰 Total Paid:</strong> ${totalAmount.toFixed(2)}</p>
-            `;
-            document.getElementById('booking-summary').innerHTML = bookingSummary;
-            
-            showPaymentStep(4);
-            
-            // Clear form and cart after successful payment
-            setTimeout(() => {
-                document.getElementById('booking-form').reset();
-                cart = [];
-                saveCart();
-                updateCartDisplay();
-            }, 8000);
-        }
-
-        document.getElementById('booking-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            if (cart.length === 0) {
-                alert('Please add at least one service to your cart before booking.');
-                return;
-            }
-
-            showPaymentModal();
-        });
-
-        // Initial call to update global cart count on page load
-        updateGlobalCartCount();
-    </script>
 </body>
 </html>

@@ -8,6 +8,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href={{ asset('css/style.css') }} rel="stylesheet">
+    
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+<script src="{{ asset('js/cart.js') }}"></script>
 
 </head>
 <body class="bg-gray-100 min-h-screen">
@@ -78,7 +81,7 @@
                 </div>
                 <div class="text-5xl text-blue-700 font-bold hidden md:block">&hearts;</div>
                 <div class="text-center">
-                    <img src={{ asset('images/dress4.jpg') }} alt="Groom Coordinated Outfit" class="w-48 h-auto rounded-lg shadow-md mx-auto mb-3">
+                    <img src={{ asset('images/groom3.webp') }} alt="Groom Coordinated Outfit" class="w-48 h-auto rounded-lg shadow-md mx-auto mb-3">
                     <p class="font-medium text-gray-800">Navy Blue Tuxedo</p>
                     <p class="text-sm text-gray-600">Style: Modern</p>
                 </div>
@@ -108,7 +111,7 @@
             </div>
 
             <div class="outfit-card bg-white rounded-xl shadow-lg overflow-hidden" data-gender="Groom" data-style="Modern" data-price="850" data-option="Rent">
-                <img src={{ asset('images/dress4.jpg') }} alt="Groom Suit" class="w-auto h-auto object-cover">
+                <img src={{ asset('images/groom2.avif') }} alt="Groom Suit" class="w-auto h-auto object-cover">
                 <div class="p-5">
                     <h3 class="text-xl font-semibold text-gray-800 mb-2">Modern Groom's Suit</h3>
                     <p class="text-gray-600 mb-2">For: Groom | Style: Modern | Option: Rent</p>
@@ -128,7 +131,7 @@
             </div>
 
             <div class="outfit-card bg-white rounded-xl shadow-lg overflow-hidden" data-gender="Bride" data-style="Modern" data-price="2500" data-option="Buy">
-                <img src={{ asset('images/dress5.jpg') }} alt="Wedding Gown" class="w-auto h-auto object-cover">
+                <img src={{ asset('images/dress3.jpg') }} alt="Wedding Gown" class="w-auto h-auto object-cover">
                 <div class="p-5">
                     <h3 class="text-xl font-semibold text-gray-800 mb-2">Chic Wedding Gown</h3>
                     <p class="text-gray-600 mb-2">For: Bride | Style: Modern | Option: Buy</p>
@@ -148,7 +151,7 @@
             </div>
 
             <div class="outfit-card bg-white rounded-xl shadow-lg overflow-hidden" data-gender="Groom" data-style="Traditional" data-price="600" data-option="Rent">
-                <img src={{ asset('images/L3.jpg') }} alt="Traditional Sherwani" class="w-auto h-90 object-cover">
+                <img src={{ asset('images/groom1.jpg') }} alt="Traditional Sherwani" class="w-auto h-90 object-cover">
                 <div class="p-5">
                     <h3 class="text-xl font-semibold text-gray-800 mb-2">Classic Sherwani</h3>
                     <p class="text-gray-600 mb-2">For: Groom | Style: Traditional | Option: Rent</p>
@@ -168,7 +171,7 @@
             </div>
 
             <div class="outfit-card bg-white rounded-xl shadow-lg overflow-hidden" data-gender="Bride" data-style="Traditional" data-price="1500" data-option="Rent">
-                <img src={{ asset('images/L2.jpg') }} alt="Lehenga Choli" class="w-auto h-90 object-cover">
+                <img src={{ asset('images/L1.jpg') }} alt="Lehenga Choli" class="w-auto h-90 object-cover">
                 <div class="p-5">
                     <h3 class="text-xl font-semibold text-gray-800 mb-2">Grand Lehenga Choli</h3>
                     <p class="text-gray-600 mb-2">For: Bride | Style: Traditional | Option: Rent</p>
@@ -188,7 +191,7 @@
             </div>
 
              <div class="outfit-card bg-white rounded-xl shadow-lg overflow-hidden" data-gender="Groom" data-style="Modern" data-price="1100" data-option="Buy">
-                <img src={{ asset('images/dress4.jpg') }} alt="Tuxedo" class="w-auto h-auto object-cover">
+                <img src={{ asset('images/groom4.jpg') }} alt="Tuxedo" class="w-auto h-auto object-cover">
                 <div class="p-5">
                     <h3 class="text-xl font-semibold text-gray-800 mb-2">Designer Tuxedo</h3>
                     <p class="text-gray-600 mb-2">For: Groom | Style: Modern | Option: Buy</p>
@@ -209,22 +212,7 @@
         </div>
     </div>
 
-    <div id="outfit-details-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h3 id="modal-outfit-name" class="text-3xl font-bold text-gray-800 mb-4"></h3>
-            <img id="modal-outfit-image" src="" alt="Outfit Image" class="w-full h-64 object-cover rounded-lg mb-4 shadow-sm">
-            <p class="text-gray-700 mb-2"><strong>For:</strong> <span id="modal-outfit-gender"></span></p>
-            <p class="text-gray-700 mb-2"><strong>Style:</strong> <span id="modal-outfit-style"></span></p>
-            <p class="text-gray-700 mb-2"><strong>Option:</strong> <span id="modal-outfit-option"></span></p>
-            <p class="text-gray-700 mb-2"><strong>Price:</strong> <span id="modal-outfit-price" class="font-semibold text-rose-600"></span></p>
-            <p class="text-gray-700 mb-4"><strong>Description:</strong> <span id="modal-outfit-description"></span></p>
-            <p class="text-gray-700"><strong>Availability:</strong> <span id="modal-outfit-availability"></span></p>
-            <button id="modal-add-to-cart-btn" class="mt-6 w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300">
-                <i class="fas fa-cart-plus mr-2"></i>Add to Cart
-            </button>
-        </div>
-    </div>
+
 
     <script>
         // Cart functionality

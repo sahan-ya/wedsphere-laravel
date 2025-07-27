@@ -23,7 +23,7 @@
                 <p class="hero-subtitle">Turn your dream wedding into reality with our magical planning platform that makes every moment perfect 💕</p>
                 
                 <div class="hero-buttons">
-                    <a href="dashboard.php" class="btn-hero">🌟 Start Your Journey</a>
+                    <a href="{{ url('/register') }}" class="btn-hero">🌟 Start Your Journey</a>
                     <a href="{{ url('/features') }}" class="btn-secondary">💖 Discover Magic</a>
                 </div>
 

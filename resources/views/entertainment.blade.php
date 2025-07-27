@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href={{ asset('css/style.css') }} rel="stylesheet">
 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+<script src="{{ asset('js/cart.js') }}"></script>
+
 </head>
 <body class="Sbody">
     <div class="Scontainer">

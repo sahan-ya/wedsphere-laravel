@@ -9,6 +9,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link href={{ asset('css/style.css') }} rel="stylesheet">
+
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+<script src="{{ asset('js/cart.js') }}"></script>
   <style>
         /* Add custom styles for the cart icon and count */
         .cart-icon-container {
@@ -164,7 +167,7 @@
       </div>
 
       <div class="venue-card">
-        <img src={{ asset('images/venue6.jpg') }} alt="Venue" class="venue-img">
+        <img src={{ asset('images/venue5.jpg') }} alt="Venue" class="venue-img">
         <h5>The Blue Water</h5>
         <p>📍 Wadduwa</p>
         <p>👥 up to 600 guests</p>

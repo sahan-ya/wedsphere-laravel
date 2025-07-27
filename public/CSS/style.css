@@ -1305,26 +1305,6 @@ overflow-x: hidden;
                 max-width: 1200px;
             }
         }
-        .outfit-card {
-            background-color: #ffffff;
-            border-radius: 0.75rem; /* rounded-xl */
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-lg */
-            padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            height: 100%; /* Ensure cards are same height in grid */
-            transition: transform 0.2s ease-in-out;
-        }
-        .outfit-card:hover {
-            transform: translateY(-5px);
-        }
-        .outfit-card button {
-            transition: background-color 0.15s ease-in-out, transform 0.15s ease-in-out;
-        }
-        .outfit-card button:hover {
-            transform: translateY(-1px);
-        }
 
         /* Custom style for radio buttons to appear as toggles */
         .radio-button-group input[type="radio"] {

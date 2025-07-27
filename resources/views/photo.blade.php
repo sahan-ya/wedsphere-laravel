@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href={{ asset('css/style.css') }} rel="stylesheet">
 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+<script src="{{ asset('js/cart.js') }}"></script>
+
 </head>
 <body class="Sbody">
     <div class="Scontainer">
@@ -182,62 +185,6 @@
 <script src="{{ asset('js/script.js') }}"></script>
     <script>
 
-        // Cart functionality
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-        function saveCart() {
-            localStorage.setItem('cart', JSON.stringify(cart));
-            updateCartCountIcon();
-        }
-
-        function updateCartCountIcon() {
-            const cartCountElement = document.getElementById('cart-count');
-            if (cartCountElement) {
-                cartCountElement.textContent = cart.length;
-                cartCountElement.style.display = cart.length > 0 ? 'inline-block' : 'none';
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            updateCartCountIcon(); // Update cart count on page load
-            // Event listeners for "Add to Cart" buttons
-            document.querySelectorAll('.add-to-cart-btn').forEach(button => {
-                button.addEventListener('click', function() {
-                    const serviceName = this.dataset.name;
-                    const servicePrice = parseFloat(this.dataset.price);
-                    addItemToCart({ name: serviceName, price: servicePrice });
-                    alert(`${serviceName} has been added to your cart!`);
-                });
-            });
-
-            // Booking form submission for inquiry
-            document.querySelector('form').addEventListener('submit', function(event) {
-                event.preventDefault(); // Prevent default form submission
-
-                const formData = {
-                    fullName: document.getElementById('fullName').value,
-                    email: document.getElementById('email').value,
-                    phone: document.getElementById('phone').value,
-                    eventType: document.getElementById('eventType').value,
-                    eventDate: document.getElementById('eventDate').value,
-                    eventTime: document.getElementById('eventTime').value,
-                    interestedServices: Array.from(document.getElementById('interestedServices').selectedOptions).map(option => option.value),
-                    notes: document.getElementById('notes').value
-                };
-
-                console.log('Photography Booking Request:', formData);
-
-                alert('Thank you! Your photography request has been sent. We will contact you shortly to discuss your needs!');
-
-                // Optionally, clear the form
-                this.reset();
-            });
-        });
-
-        function addItemToCart(item) {
-            cart.push(item);
-            saveCart();
-        }
-    </script>
+        
 </body>
 </html>

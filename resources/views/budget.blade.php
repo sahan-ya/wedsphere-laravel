@@ -10,7 +10,7 @@
 
 </head>
 <body class="bg-gray-100 min-h-screen">
-    @include('layouts.header')
+    
     <div class="container py-12">
             <a class="back-btn" href="{{ url('/service') }}">back</a>
         <h1 class="text-5xl font-extrabold text-center text-rose-700 mb-12 drop-shadow-sm">Wedding Budget Planner</h1>

@@ -72,4 +72,13 @@ Route::get('/login', function () {
 Route::get('/welcome', function () {
     return view('welcome'); // loads resources/views/about.blade.php
 });
+
+use App\Http\Controllers\CartController;
+// ... other routes
+
+Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
+Route::get('/cart/items', [CartController::class, 'getCartItems'])->name('cart.items');
+Route::post('/cart/remove', [CartController::class, 'removeFromCart'])->name('cart.remove');
+Route::post('/cart/clear', [CartController::class, 'clearCart'])->name('cart.clear');
+
 ?>
